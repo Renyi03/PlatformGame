@@ -141,10 +141,18 @@ void Player::Move() {
 
 void Player::Jump() {
 	// This function can be used for more complex jump logic if needed
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
-		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
-		anims.SetCurrent("jump");
-		isJumping = true;
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		if (!isJumping) {
+			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
+			anims.SetCurrent("jump");
+			isJumping = true;
+			doubleJump = true;
+		}
+		// Second jump (in air)
+		else if (isJumping && doubleJump) {
+			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
+			doubleJump = false;
+		}
 	}
 }
 
@@ -173,8 +181,13 @@ void Player::Draw(float dt) {
 	//L10: TODO 7: Center the camera on the player
 	float limitLeft = Engine::GetInstance().render->camera.w / 4;
 	float limitRight = Engine::GetInstance().map->GetMapSizeInPixels().getX() - Engine::GetInstance().render->camera.w * 3 / 4;
+	float limitUp = Engine::GetInstance().render->camera.h / 4;
+	float limitDown = Engine::GetInstance().map->GetMapSizeInPixels().getY() - Engine::GetInstance().render->camera.h * 3 / 4;
 	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
 		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 4;
+	}
+	if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
+		Engine::GetInstance().render->camera.y = -position.getY() + Engine::GetInstance().render->camera.h / 4;
 	}
 }
 
