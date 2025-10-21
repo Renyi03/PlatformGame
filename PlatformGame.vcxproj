@@ -143,6 +143,7 @@
     <None Include=".gitignore" />
     <None Include="Assets\Maps\Desarrollo.tmx" />
     <None Include="Assets\Maps\MapTemplate.tmx" />
+    <None Include="Assets\Textures\MikuSpriteSheet.tsx" />
     <None Include="vcpkg-configuration.json" />
     <None Include="vcpkg.json" />
   </ItemGroup>

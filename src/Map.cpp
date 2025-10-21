@@ -36,6 +36,7 @@ bool Map::Update(float dt)
     bool ret = true;
 
     if (mapLoaded) {
+        CreateColliders();
 
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
         // iterate all tiles in a layer
@@ -187,7 +188,7 @@ bool Map::Load(std::string path, std::string fileName)
             mapObjects->id = objectGroupNode.attribute("id").as_int();
             mapObjects->name = objectGroupNode.attribute("name").as_string();
             
-            for (pugi::xml_node objectNode = mapFileXML.child("map").child("objectgroup"); objectNode != NULL; objectNode = objectNode.next_sibling("objectNode")) {
+            for (pugi::xml_node objectNode = mapFileXML.child("map").child("objectNode"); objectNode != NULL; objectNode = objectNode.next_sibling("objectNode")) {
                 Object* object = new Object();
                 object->id = objectNode.attribute("id").as_int();
                 object->x = objectNode.attribute("x").as_int();
@@ -289,6 +290,17 @@ Vector2D Map::GetMapSizeInPixels()
 
 }
 
-
-
-
+void Map::CreateColliders()
+{
+    for (const auto &mapObjects : mapData.objects) {
+        if (mapObjects->name == "Collisions") {
+            for (const auto& obj : mapObjects->obj) {
+                Vector2D mapCoord = MapToWorld(obj->x, obj->y);
+                float x = obj->x + obj->width / 2;
+                float y = obj->y + obj->width / 2;
+                PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(x, y, obj->width, obj->height, STATIC);
+                c1->ctype = ColliderType::PLATFORM;
+            }            
+        }
+    }
+}

@@ -29,12 +29,12 @@ bool Player::Awake() {
 bool Player::Start() {
 
 	// load
-	std::unordered_map<int, std::string> aliases = { {0,"idle"},{11,"move"},{22,"jump"} };
-	anims.LoadFromTSX("Assets/Textures/PLayer2_Spritesheet.tsx", aliases);
+	std::unordered_map<int, std::string> aliases = { {0,"idle"},{6,"move"},{12,"jump"} };
+	anims.LoadFromTSX("Assets/Textures/MikuSpriteSheet.tsx", aliases);
 	anims.SetCurrent("idle");
 
 	//L03: TODO 2: Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/player2_spritesheet.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Textures/MikuSpriteSheet.png");
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	//Engine::GetInstance().textures->GetSize(texture, texW, texH);
@@ -132,9 +132,9 @@ void Player::Draw(float dt) {
 	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
 		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 4;
 	}
-	/*if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
+	if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
 		Engine::GetInstance().render->camera.y = -position.getY() + Engine::GetInstance().render->camera.h / 4;
-	}*/
+	}
 }
 
 void Player::GodMode()
