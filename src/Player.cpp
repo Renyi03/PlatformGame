@@ -206,6 +206,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision PLATFORM");
 		//reset the jump flag when touching the ground
 		isJumping = false;
+		doubleJump = false;
 		anims.SetCurrent("idle");
 		break;
 	case ColliderType::ITEM:

@@ -241,6 +241,19 @@ bool Engine::PreUpdate()
         }
     }
 
+    if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
+        frameCap = !frameCap;
+
+        if (frameCap) {
+            targetFrameRate = 30;
+            LOG("Framecap enabled: 30 FPS");
+        }
+        else {
+            targetFrameRate = configFile.child("config").child("engine").child("targetFrameRate").attribute("value").as_int();
+            LOG("Framecap disabled: %d FPS", targetFrameRate);
+        }
+    }
+
     return result;
 }
 
