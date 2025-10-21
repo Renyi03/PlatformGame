@@ -35,6 +35,7 @@ private:
 	void Jump();
 	void ApplyPhysics();
 	void Draw(float dt);
+	void GodMode();
 
 public:
 
@@ -51,7 +52,8 @@ public:
 	PhysBody* pbody;
 	float jumpForce = 2.5f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
-	bool doubleJump = false;
+	bool doubleJump = false; // Flag to check if the player has consumed the double jump
+	bool godMode = false; // Flag to check if the player has activated God Mode
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims;

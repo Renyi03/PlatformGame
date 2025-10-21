@@ -96,6 +96,7 @@ void Player::Jump() {
 		// Second jump (in air)
 		else if (isJumping && doubleJump) {
 			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
+			anims.SetCurrent("jump");
 			doubleJump = false;
 		}
 	}
@@ -131,8 +132,31 @@ void Player::Draw(float dt) {
 	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
 		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 4;
 	}
-	if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
+	/*if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
 		Engine::GetInstance().render->camera.y = -position.getY() + Engine::GetInstance().render->camera.h / 4;
+	}*/
+}
+
+void Player::GodMode()
+{
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		godMode = !godMode;
+		if (godMode == true) {
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+				velocity.x = -speed;
+				anims.SetCurrent("move");
+			}
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				velocity.x = speed;
+				anims.SetCurrent("move");
+			}
+			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+				Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
+			}
+		}
+		if (godMode == false) {
+
+		}
 	}
 }
 
