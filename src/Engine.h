@@ -130,5 +130,6 @@ private:
 	//L05 TODO 2: Declare a xml_document to load the config file
 	pugi::xml_document configFile;
 
-	bool frameCap = false;
+	bool frameCap = false; //Activate or deactivate 30 fps framecap
+	bool vsyncEnabled = false; //Activate or deactivate VSync
 };

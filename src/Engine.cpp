@@ -83,6 +83,14 @@ bool Engine::Awake() {
     // L05: TODO 3: Read the title from the config file and set the variable gameTitle, read targetFrameRate and set the variables
     gameTitle = configFile.child("config").child("engine").child("title").child_value();
     targetFrameRate = configFile.child("config").child("engine").child("targetFrameRate").attribute("value").as_int();
+    vsyncEnabled = configFile.child("config").child("engine").child("vsync").attribute("value").as_bool();
+
+    if (vsyncEnabled) {
+        SDL_SetRenderVSync(render->renderer, 1);  //Enable VSync
+    }
+    else {
+        SDL_SetRenderVSync(render->renderer, 0);  //Disable VSync
+    }
 
     //Iterates the module list and calls Awake on each module
     bool result = true;
@@ -221,7 +229,8 @@ void Engine::FinishUpdate()
         << " Last sec frames: " << framesPerSecond
         << " Last dt: " << std::fixed << std::setprecision(3) << dt
         << " Time since startup: " << secondsSinceStartup
-        << " Frame Count: " << frameCount;
+        << " Frame Count: " << frameCount
+        << " Vsync: " << (vsyncEnabled ? "Enabled" : "Disabled");
 
     std::string titleStr = ss.str();
 
@@ -244,14 +253,22 @@ bool Engine::PreUpdate()
     if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN) {
         frameCap = !frameCap;
 
+        //Capping framerate to 30fps
         if (frameCap) {
             targetFrameRate = 30;
             LOG("Framecap enabled: 30 FPS");
         }
+        //Returning to 60fps
         else {
             targetFrameRate = configFile.child("config").child("engine").child("targetFrameRate").attribute("value").as_int();
             LOG("Framecap disabled: %d FPS", targetFrameRate);
         }
+    }
+
+    if (input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
+        vsyncEnabled = !vsyncEnabled;
+        SDL_SetRenderVSync(render->renderer, vsyncEnabled ? 1 : 0);
+        LOG("VSync %s", vsyncEnabled ? "enabled" : "disabled");
     }
 
     return result;
