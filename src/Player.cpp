@@ -56,12 +56,15 @@ bool Player::Start() {
 
 bool Player::Update(float dt)
 {
-	GetPhysicsValues();
-	Move();
-	Jump();
-	ApplyPhysics();
-	Draw(dt);
 	GodMode();
+
+	if (godMode == false) {
+		GetPhysicsValues();
+		Move();
+		Jump();
+		ApplyPhysics();
+	}
+	Draw(dt);
 
 	return true;
 }
