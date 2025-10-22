@@ -44,7 +44,8 @@ bool Scene::Start()
 	//Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
 
 	//L06 TODO 3: Call the function to load the map. 
-	Engine::GetInstance().map->Load("Assets/Maps/", "MapTemplate.tmx");
+	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
+	Engine::GetInstance().map->CreateColliders();
 	
 	return true;
 }

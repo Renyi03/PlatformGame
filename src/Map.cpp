@@ -36,8 +36,6 @@ bool Map::Update(float dt)
     bool ret = true;
 
     if (mapLoaded) {
-        CreateColliders();
-
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
         // iterate all tiles in a layer
         for (const auto& mapLayer : mapData.layers) {
@@ -188,13 +186,13 @@ bool Map::Load(std::string path, std::string fileName)
             mapObjects->id = objectGroupNode.attribute("id").as_int();
             mapObjects->name = objectGroupNode.attribute("name").as_string();
             
-            for (pugi::xml_node objectNode = mapFileXML.child("map").child("objectNode"); objectNode != NULL; objectNode = objectNode.next_sibling("objectNode")) {
+            for (pugi::xml_node objectNode = objectGroupNode.child("object"); objectNode != NULL; objectNode = objectNode.next_sibling("object")) {
                 Object* object = new Object();
                 object->id = objectNode.attribute("id").as_int();
-                object->x = objectNode.attribute("x").as_int();
-                object->y = objectNode.attribute("y").as_int();
-                object->width = objectNode.attribute("width").as_int();
-                object->height = objectNode.attribute("height").as_int();
+                object->x = objectNode.attribute("x").as_float();
+                object->y = objectNode.attribute("y").as_float();
+                object->width = objectNode.attribute("width").as_float();
+                object->height = objectNode.attribute("height").as_float();
 
                 mapObjects->obj.push_back(object);
             }
@@ -295,10 +293,7 @@ void Map::CreateColliders()
     for (const auto &mapObjects : mapData.objects) {
         if (mapObjects->name == "Collisions") {
             for (const auto& obj : mapObjects->obj) {
-                Vector2D mapCoord = MapToWorld(obj->x, obj->y);
-                float x = obj->x + obj->width / 2;
-                float y = obj->y + obj->width / 2;
-                PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(x, y, obj->width, obj->height, STATIC);
+                PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(obj->x + obj->width / 2, obj->y + obj->height / 2, obj->width, obj->height, STATIC);
                 c1->ctype = ColliderType::PLATFORM;
             }            
         }
