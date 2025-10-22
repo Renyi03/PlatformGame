@@ -61,6 +61,7 @@ bool Player::Update(float dt)
 	Jump();
 	ApplyPhysics();
 	Draw(dt);
+	GodMode();
 
 	return true;
 }
@@ -140,23 +141,45 @@ void Player::Draw(float dt) {
 void Player::GodMode()
 {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+
+		//God Mode toggle
 		godMode = !godMode;
 		if (godMode == true) {
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-				velocity.x = -speed;
-				anims.SetCurrent("move");
-			}
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-				velocity.x = speed;
-				anims.SetCurrent("move");
-			}
-			if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-				Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
-			}
+			b2Body_SetGravityScale(pbody->body, 0.0f);
+			LOG("God Mode enabled");
 		}
 		if (godMode == false) {
-
+			b2Body_SetGravityScale(pbody->body, GRAVITY_Y);
+			LOG("God Mode disabled");
 		}
+	}
+	if (godMode) {
+		//Starts with no movement
+		b2Vec2 velocity = { 0.0f, 0.0f };
+
+		//Assigns a certain value to the local variable velocity according to the key pressed
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			velocity.x = -speed;
+			anims.SetCurrent("move");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			velocity.x = speed;
+			anims.SetCurrent("move");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			velocity.y = -speed;
+			anims.SetCurrent("move");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			velocity.y = speed;
+			anims.SetCurrent("move");
+		}
+		else {
+			anims.SetCurrent("idle");
+		}
+
+		//Applies the velocity to the player
+		b2Body_SetLinearVelocity(pbody->body, velocity);
 	}
 }
 
