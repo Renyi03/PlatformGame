@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Item.h"
+#include "Physics.h"
 
 Scene::Scene() : Module()
 {
@@ -117,5 +118,7 @@ void Scene::RestartLevel()
 	player->gameOver = false;
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
-	player->position = { 96, 96 };
+	player->pbody->SetPosition(96, 96);
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = 0;
 }

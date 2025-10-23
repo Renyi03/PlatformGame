@@ -361,6 +361,13 @@ void PhysBody::GetPosition(int& x, int& y) const
     y = METERS_TO_PIXELS(pos.y);
 }
 
+void PhysBody::SetPosition(int x, int y)
+{
+    b2Vec2 position = { x, y };
+    b2Rot rotation = b2Rot_identity;
+    b2Body_SetTransform(body, PIXEL_TO_METERS(position), rotation);
+}
+
 float PhysBody::GetRotation() const
 {
     b2Transform xf = b2Body_GetTransform(body);
