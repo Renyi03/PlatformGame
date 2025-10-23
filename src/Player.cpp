@@ -144,7 +144,6 @@ void Player::Draw(float dt) {
 void Player::GodMode()
 {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-
 		//God Mode toggle
 		godMode = !godMode;
 		if (godMode == true) {
@@ -152,7 +151,7 @@ void Player::GodMode()
 			LOG("God Mode enabled");
 		}
 		if (godMode == false) {
-			b2Body_SetGravityScale(pbody->body, GRAVITY_Y);
+			b2Body_SetGravityScale(pbody->body, 1.0f );
 			LOG("God Mode disabled");
 		}
 	}
