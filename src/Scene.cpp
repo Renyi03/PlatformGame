@@ -40,6 +40,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	controlsTexture = Engine::GetInstance().textures->Load("Assets/Textures/Controls.png");
 
 	//Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
 
@@ -59,8 +60,18 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	//Restarts the level after player death
 	if (player->gameOver) {
 		RestartLevel();
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
+		showControls = !showControls;
+	}
+	if (showControls == true) {
+
+		Engine::GetInstance().render->DrawTexture(controlsTexture, 640, 360);
+
 	}
 
 	//L03 TODO 3: Make the camera movement independent of framerate

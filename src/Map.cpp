@@ -17,7 +17,6 @@ Map::Map() : Module(), mapLoaded(false)
 // Destructor
 Map::~Map()
 {
-    delete this;
 }
 
 // Called before render is available
@@ -295,7 +294,6 @@ void Map::CreateColliders()
 {
     int colliderCount = 0;
     for (const auto &mapObjects : mapData.objects) {
-        colliderCount++;
         if (mapObjects->name == "Platforms") {
             for (const auto& obj : mapObjects->obj) {
                 PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(obj->x + obj->width / 2, obj->y + obj->height / 2, obj->width, obj->height, STATIC);
@@ -315,5 +313,4 @@ void Map::CreateColliders()
             }
         }
     }
-    LOG("Created %d colliders", colliderCount);
 }
