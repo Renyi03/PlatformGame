@@ -293,7 +293,9 @@ Vector2D Map::GetMapSizeInPixels()
 
 void Map::CreateColliders()
 {
+    int colliderCount = 0;
     for (const auto &mapObjects : mapData.objects) {
+        colliderCount++;
         if (mapObjects->name == "Platforms") {
             for (const auto& obj : mapObjects->obj) {
                 PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(obj->x + obj->width / 2, obj->y + obj->height / 2, obj->width, obj->height, STATIC);
@@ -313,10 +315,5 @@ void Map::CreateColliders()
             }
         }
     }
-}
-
-void Map::GameOver()
-{
-    
-    
+    LOG("Created %d colliders", colliderCount);
 }

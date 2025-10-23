@@ -154,8 +154,6 @@ public:
     //Creates colliders from Tiled's object layers
     void CreateColliders();
 
-    void GameOver();
-
 public: 
     std::string mapFileName;
     std::string mapPath;

@@ -59,6 +59,10 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	if (player->gameOver) {
+		RestartLevel();
+	}
+
 	//L03 TODO 3: Make the camera movement independent of framerate
 	float camSpeed = 1;
 
@@ -94,4 +98,13 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+void Scene::RestartLevel()
+{
+	LOG("Restarting level");
+	player->gameOver = false;
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
+	player->position = { 96, 96 };
 }

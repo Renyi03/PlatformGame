@@ -32,6 +32,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	//Restarts the level after dying
+	void RestartLevel();
 private:
 
 	//L03: TODO 3b: Declare a Player attribute
