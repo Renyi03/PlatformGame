@@ -136,7 +136,7 @@ void Player::Draw(float dt) {
 	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
 		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 4;
 	}
-	if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
+	if (position.getY() - limitUp > 0 && position.getY() < limitDown) {
 		Engine::GetInstance().render->camera.y = -position.getY() + Engine::GetInstance().render->camera.h / 4;
 	}
 }
