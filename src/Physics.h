@@ -29,7 +29,9 @@ enum class ColliderType {
     ITEM,
     PLATFORM,
     ENEMY,
-    UNKNOWN
+    UNKNOWN,
+    VOID,
+    LIMITS
     // ..
 };
 

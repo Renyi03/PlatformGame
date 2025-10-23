@@ -34,9 +34,6 @@
     <None Include="Assets\Maps\Desarrollo.tmx">
       <Filter>Configuration FIles</Filter>
     </None>
-    <None Include="Assets\Textures\MikuSpriteSheet.tsx">
-      <Filter>Configuration FIles</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Audio.cpp">

@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Log.h"
 #include "Physics.h"
+#include "Player.h"
 
 #include <math.h>
 
@@ -15,7 +16,9 @@ Map::Map() : Module(), mapLoaded(false)
 
 // Destructor
 Map::~Map()
-{}
+{
+    delete this;
+}
 
 // Called before render is available
 bool Map::Awake()
@@ -291,11 +294,29 @@ Vector2D Map::GetMapSizeInPixels()
 void Map::CreateColliders()
 {
     for (const auto &mapObjects : mapData.objects) {
-        if (mapObjects->name == "Collisions") {
+        if (mapObjects->name == "Platforms") {
             for (const auto& obj : mapObjects->obj) {
                 PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(obj->x + obj->width / 2, obj->y + obj->height / 2, obj->width, obj->height, STATIC);
                 c1->ctype = ColliderType::PLATFORM;
             }            
         }
+        if (mapObjects->name == "Void") {
+            for (const auto& obj : mapObjects->obj) {
+                PhysBody* c2 = Engine::GetInstance().physics.get()->CreateRectangle(obj->x + obj->width / 2, obj->y + obj->height / 2, obj->width, obj->height, STATIC);
+                c2->ctype = ColliderType::VOID;
+            }
+        }
+        if (mapObjects->name == "Limits") {
+            for (const auto& obj : mapObjects->obj) {
+                PhysBody* c3 = Engine::GetInstance().physics.get()->CreateRectangle(obj->x + obj->width / 2, obj->y + obj->height / 2, obj->width, obj->height, STATIC);
+                c3->ctype = ColliderType::LIMITS;
+            }
+        }
     }
+}
+
+void Map::GameOver()
+{
+    
+    
 }
