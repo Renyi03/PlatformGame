@@ -98,6 +98,8 @@ void Player::Jump() {
 		}
 		// Second jump (in air)
 		else if (isJumping && doubleJump) {
+			b2Vec2 currentVel = Engine::GetInstance().physics->GetLinearVelocity(pbody);
+			Engine::GetInstance().physics->SetLinearVelocity(pbody, { currentVel.x, 0.0f });
 			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
 			anims.SetCurrent("jump");
 			doubleJump = false;
