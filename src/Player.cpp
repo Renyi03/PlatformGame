@@ -16,7 +16,6 @@ Player::Player() : Entity(EntityType::PLAYER)
 }
 
 Player::~Player() {
-
 }
 
 bool Player::Awake() {
@@ -202,14 +201,16 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		isJumping = false;
 		doubleJump = false;
 		anims.SetCurrent("idle");
+		LOG("Animation set to idle");
 		break;
 	case ColliderType::ITEM:
 		LOG("Collision ITEM");
 		Engine::GetInstance().audio->PlayFx(pickCoinFxId);
 		physB->listener->Destroy();
 		break;
-	case ColliderType::UNKNOWN:
-		LOG("Collision UNKNOWN");
+	case ColliderType::VOID:
+		LOG("Collision VOID");
+		gameOver = true;
 		break;
 	default:
 		break;
@@ -233,4 +234,3 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		break;
 	}
 }
-

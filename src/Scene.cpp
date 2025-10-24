@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Item.h"
+#include "Physics.h"
 
 Scene::Scene() : Module()
 {
@@ -40,6 +41,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	controlsTexture = Engine::GetInstance().textures->Load("Assets/Textures/Controls.png");
 
 	//Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
 
@@ -59,6 +61,20 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	//Restarts the level after player death
+	if (player->gameOver) {
+		RestartLevel();
+	}
+
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_H) == KEY_DOWN) {
+		showControls = !showControls;
+	}
+	if (showControls == true) {
+
+		Engine::GetInstance().render->DrawTexture(controlsTexture, 640, 360);
+
+	}
+
 	//L03 TODO 3: Make the camera movement independent of framerate
 	float camSpeed = 1;
 
@@ -94,4 +110,15 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+void Scene::RestartLevel()
+{
+	LOG("Restarting level");
+	player->gameOver = false;
+	Engine::GetInstance().map->CleanUp();
+	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
+	player->pbody->SetPosition(96, 96);
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = 0;
 }
