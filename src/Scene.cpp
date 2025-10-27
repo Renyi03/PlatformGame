@@ -73,9 +73,9 @@ bool Scene::Update(float dt)
 		int cameraPositionX = Engine::GetInstance().render.get()->camera.x;
 		int cameraPositionY = Engine::GetInstance().render.get()->camera.y;
 		int windowWidth = Engine::GetInstance().window.get()->width;
-		int windoweHeight = Engine::GetInstance().window.get()->height;
+		int windowHeight = Engine::GetInstance().window.get()->height;
 
-		Engine::GetInstance().render->DrawTexture(controlsTexture, -(cameraPositionX / 2) + (windowWidth / 2) - (controlsTexture->w/2), -(cameraPositionY / 2) + (windoweHeight / 2) - (controlsTexture->h / 4));
+		Engine::GetInstance().render->DrawTexture(controlsTexture, -(cameraPositionX) + (windowWidth / 2) - (controlsTexture->w/2), -(cameraPositionY) + (windowHeight / 2) - (controlsTexture->h / 2));
 
 	}
 

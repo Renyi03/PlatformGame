@@ -78,6 +78,7 @@ void Player::Move() {
 	
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		
 		velocity.x = -speed;
 		anims.SetCurrent("move");
 	}
