@@ -56,7 +56,7 @@ bool Player::Start() {
 bool Player::Update(float dt)
 {
 	GodMode();
-	anims.SetCurrent("idle");
+
 	if (godMode == false) {
 		GetPhysicsValues();
 		Move();
@@ -81,6 +81,7 @@ void Player::Move() {
 		anims.SetCurrent("move");
 		facingDirection = SDL_FLIP_HORIZONTAL;
 	}
+	
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed;
 		anims.SetCurrent("move");
