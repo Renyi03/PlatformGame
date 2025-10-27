@@ -21,7 +21,7 @@ Player::~Player() {
 bool Player::Awake() {
 
 	//L03: TODO 2: Initialize Player parameters
-	position = Vector2D(72, 3119);
+	position = Vector2D(72, 2320);
 	return true;
 }
 
@@ -75,16 +75,16 @@ void Player::GetPhysicsValues() {
 }
 
 void Player::Move() {
-	
 	// Move left/right
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {		
 		velocity.x = -speed;
 		anims.SetCurrent("move");
+		facingDirection = SDL_FLIP_HORIZONTAL;
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed;
 		anims.SetCurrent("move");
+		facingDirection = SDL_FLIP_NONE;
 	}
 }
 

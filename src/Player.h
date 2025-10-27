@@ -55,6 +55,7 @@ public:
 	bool doubleJump = false; // Flag to check if the player has consumed the double jump
 	bool godMode = false; // Flag to check if the player has activated God Mode
 	bool gameOver = false; // Flag to check if the player has died
+	SDL_FlipMode facingDirection = SDL_FLIP_NONE;
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims;

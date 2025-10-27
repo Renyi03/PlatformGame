@@ -48,6 +48,9 @@ bool Scene::Start()
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
 	Engine::GetInstance().map->CreateColliders();
+
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = -1680;
 	
 	return true;
 }
