@@ -56,7 +56,7 @@ bool Player::Start() {
 bool Player::Update(float dt)
 {
 	GodMode();
-
+	anims.SetCurrent("idle");
 	if (godMode == false) {
 		GetPhysicsValues();
 		Move();
