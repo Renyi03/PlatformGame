@@ -214,7 +214,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::VOID:
 		LOG("Collision VOID");
-		gameOver = true;
+		if (godMode == false) {
+			gameOver = true;
+		}
 		break;
 	default:
 		break;
