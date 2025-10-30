@@ -80,12 +80,19 @@ void Player::Move() {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		
 		velocity.x = -speed;
-		anims.SetCurrent("move");
+		if (!isJumping) {
+			anims.SetCurrent("move");
+		}
 	}
-	
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed;
-		anims.SetCurrent("move");
+		if (!isJumping) {
+			anims.SetCurrent("move");
+		}
+	}
+
+	else if(!isJumping) {
+		anims.SetCurrent("idle");
 	}
 }
 
@@ -167,15 +174,15 @@ void Player::GodMode()
 			velocity.x = -speed;
 			anims.SetCurrent("move");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			velocity.x = speed;
 			anims.SetCurrent("move");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			velocity.y = -speed;
 			anims.SetCurrent("move");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			velocity.y = speed;
 			anims.SetCurrent("move");
 		}
