@@ -43,7 +43,7 @@ bool Scene::Start()
 {
 	controlsTexture = Engine::GetInstance().textures->Load("Assets/Textures/Controls.png");
 
-	//Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/Miku.wav");
 
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
