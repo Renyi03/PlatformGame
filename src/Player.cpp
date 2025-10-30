@@ -21,7 +21,7 @@ Player::~Player() {
 bool Player::Awake() {
 
 	//L03: TODO 2: Initialize Player parameters
-	position = Vector2D(96, 96);
+	position = Vector2D(72, 2320);
 	return true;
 }
 
@@ -75,19 +75,20 @@ void Player::GetPhysicsValues() {
 }
 
 void Player::Move() {
-	
 	// Move left/right
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {		
 		velocity.x = -speed;
 		if (!isJumping) {
 			anims.SetCurrent("move");
+			//facingDirection = SDL_FLIP_HORIZONTAL;
 		}
+		anims.SetCurrent("move");
 	}
 	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed;
 		if (!isJumping) {
 			anims.SetCurrent("move");
+			//facingDirection = SDL_FLIP_NONE;
 		}
 	}
 
@@ -221,7 +222,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::VOID:
 		LOG("Collision VOID");
-		gameOver = true;
+		if (godMode == false) {
+			gameOver = true;
+		}
 		break;
 	default:
 		break;

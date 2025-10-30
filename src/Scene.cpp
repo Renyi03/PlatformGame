@@ -48,6 +48,9 @@ bool Scene::Start()
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
 	Engine::GetInstance().map->CreateColliders();
+
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = -1680;
 	
 	return true;
 }
@@ -122,7 +125,7 @@ void Scene::RestartLevel()
 	player->gameOver = false;
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
-	player->pbody->SetPosition(96, 96);
+	player->pbody->SetPosition(72, 2320);
 	Engine::GetInstance().render->camera.x = 0;
-	Engine::GetInstance().render->camera.y = 0;
+	Engine::GetInstance().render->camera.y = -1680;
 }
