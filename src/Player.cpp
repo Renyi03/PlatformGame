@@ -40,6 +40,7 @@ bool Player::Start() {
 	texW = 32;
 	texH = 32;
 	pbody = Engine::GetInstance().physics->CreateCircle((int)position.getX(), (int)position.getY(), texW / 2, bodyType::DYNAMIC);
+	lookingRight = true;
 
 	// L08 TODO 6: Assign player class (using "this") to the listener of the pbody. This makes the Physics module to call the OnCollision method
 	pbody->listener = this;
@@ -77,21 +78,37 @@ void Player::GetPhysicsValues() {
 void Player::Move() {
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {		
+		lookingRight = false;
 		velocity.x = -speed;
+		if (!isJumping) {
+			anims.SetCurrent("move");
+			facingDirection = SDL_FLIP_HORIZONTAL;
+		}
 		anims.SetCurrent("move");
-		facingDirection = SDL_FLIP_HORIZONTAL;
 	}
-	
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		lookingRight = true;
 		velocity.x = speed;
-		anims.SetCurrent("move");
-		facingDirection = SDL_FLIP_NONE;
+		if (!isJumping) {
+			anims.SetCurrent("move");
+			facingDirection = SDL_FLIP_NONE;
+		}
+	}
+
+	else if(!isJumping) {
+		anims.SetCurrent("idle");
 	}
 }
 
 void Player::Jump() {
 	// This function can be used for more complex jump logic if needed
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		if (lookingRight) {
+			facingDirection = SDL_FLIP_NONE;
+		}
+		else {
+			facingDirection = SDL_FLIP_HORIZONTAL;
+		}
 		if (!isJumping) {
 			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);			
 			anims.SetCurrent("jump");
@@ -134,7 +151,7 @@ void Player::Draw(float dt) {
 	pbody->GetPosition(x, y);
 	position.setX((float)x);
 	position.setY((float)y);
-	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame, 1, 0, INT_MAX, INT_MAX, facingDirection);
 
 	//L10: TODO 7: Center the camera on the player
 	float limitLeft = Engine::GetInstance().render->camera.w / 4;
@@ -172,15 +189,15 @@ void Player::GodMode()
 			velocity.x = -speed;
 			anims.SetCurrent("move");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			velocity.x = speed;
 			anims.SetCurrent("move");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 			velocity.y = -speed;
 			anims.SetCurrent("move");
 		}
-		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			velocity.y = speed;
 			anims.SetCurrent("move");
 		}
