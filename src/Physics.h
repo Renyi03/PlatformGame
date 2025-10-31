@@ -31,7 +31,8 @@ enum class ColliderType {
     ENEMY,
     UNKNOWN,
     VOID,
-    LIMITS
+    LIMITS,
+    SPIKES
     // ..
 };
 
