@@ -43,11 +43,14 @@ bool Scene::Start()
 {
 	controlsTexture = Engine::GetInstance().textures->Load("Assets/Textures/Controls.png");
 
-	//Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/level-iv-339695.wav");
+	Engine::GetInstance().audio->PlayMusic("Assets/Audio/Music/Miku.wav");
 
 	//L06 TODO 3: Call the function to load the map. 
 	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
 	Engine::GetInstance().map->CreateColliders();
+
+	Engine::GetInstance().render->camera.x = 0;
+	Engine::GetInstance().render->camera.y = -1680;
 	
 	return true;
 }
@@ -73,9 +76,9 @@ bool Scene::Update(float dt)
 		int cameraPositionX = Engine::GetInstance().render.get()->camera.x;
 		int cameraPositionY = Engine::GetInstance().render.get()->camera.y;
 		int windowWidth = Engine::GetInstance().window.get()->width;
-		int windoweHeight = Engine::GetInstance().window.get()->height;
+		int windowHeight = Engine::GetInstance().window.get()->height;
 
-		Engine::GetInstance().render->DrawTexture(controlsTexture, -(cameraPositionX / 2) + (windowWidth / 2) - (controlsTexture->w/2), -(cameraPositionY / 2) + (windoweHeight / 2) - (controlsTexture->h / 4));
+		Engine::GetInstance().render->DrawTexture(controlsTexture, -(cameraPositionX) + (windowWidth / 2) - (controlsTexture->w/2), -(cameraPositionY) + (windowHeight / 2) - (controlsTexture->h / 2));
 
 	}
 
@@ -122,7 +125,7 @@ void Scene::RestartLevel()
 	player->gameOver = false;
 	Engine::GetInstance().map->CleanUp();
 	Engine::GetInstance().map->Load("Assets/Maps/", "Desarrollo.tmx");
-	player->pbody->SetPosition(96, 96);
+	player->pbody->SetPosition(72, 2320);
 	Engine::GetInstance().render->camera.x = 0;
-	Engine::GetInstance().render->camera.y = 0;
+	Engine::GetInstance().render->camera.y = -1680;
 }

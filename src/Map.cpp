@@ -312,5 +312,11 @@ void Map::CreateColliders()
                 c3->ctype = ColliderType::LIMITS;
             }
         }
+        if (mapObjects->name == "ThinPlatforms") {
+            for (const auto& obj : mapObjects->obj) {
+                PhysBody* c4 = Engine::GetInstance().physics.get()->CreateRectangle(obj->x + obj->width / 2, obj->y + obj->height / 2, obj->width, obj->height, STATIC);
+                c4->ctype = ColliderType::PLATFORM;
+            }
+        }
     }
 }
