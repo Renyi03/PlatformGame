@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 #include "Map.h"
+#include "PerfTimer.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
 {
@@ -63,6 +64,10 @@ bool Player::Update(float dt)
 		Move();
 		Jump();
 		ApplyPhysics();
+		if (dead && (timer.ReadMs() >= 600)) {
+			dead = false;
+			gameOver = true;
+		}
 	}
 	Draw(dt);
 
@@ -81,22 +86,26 @@ void Player::Move() {
 	// Move left/right
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {		
 		lookingRight = false;
-		velocity.x = -speed;
-		if (!isJumping) {
-			anims.SetCurrent("move");
-			facingDirection = SDL_FLIP_HORIZONTAL;
+		if (!dead) {
+			velocity.x = -speed;
+			if (!isJumping) {
+				anims.SetCurrent("move");
+				facingDirection = SDL_FLIP_HORIZONTAL;
+			}
 		}
 	}
 	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		lookingRight = true;
-		velocity.x = speed;
-		if (!isJumping) {
-			anims.SetCurrent("move");
-			facingDirection = SDL_FLIP_NONE;
+		if (!dead) {
+			velocity.x = speed;
+			if (!isJumping && !dead) {
+				anims.SetCurrent("move");
+				facingDirection = SDL_FLIP_NONE;
+			}
 		}
 	}
 
-	else if(!isJumping) {
+	else if(!isJumping && !dead) {
 		anims.SetCurrent("idle");
 	}
 }
@@ -249,9 +258,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::VOID:
 		LOG("Collision VOID");
-		if (godMode == false) {
-			gameOver = true;
-		}
+		timer.Start();
+		anims.SetCurrent("death");
+		dead = true;
 		break;
 	case ColliderType::SPIKES:
 		LOG("Collision SPIKES");

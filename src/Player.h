@@ -5,6 +5,7 @@
 #include <box2d/box2d.h>
 #include <SDL3/SDL.h>
 #include "Player.h"
+#include "PerfTimer.h"
 
 struct SDL_Texture;
 
@@ -57,6 +58,8 @@ public:
 	bool gameOver = false; // Flag to check if the player has died
 	SDL_FlipMode facingDirection = SDL_FLIP_NONE;
 	bool lookingRight;
+	bool dead = false;
+	PerfTimer timer;
 private: 
 	b2Vec2 velocity;
 	AnimationSet anims;
