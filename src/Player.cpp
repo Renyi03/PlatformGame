@@ -264,9 +264,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::SPIKES:
 		LOG("Collision SPIKES");
-		if (godMode == false) {
-			gameOver = true;
-		}
+		timer.Start();
+		anims.SetCurrent("death");
+		dead = true;
 		break;
 	default:
 		break;
