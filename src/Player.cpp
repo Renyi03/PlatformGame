@@ -199,23 +199,21 @@ void Player::GodMode()
 		//Assigns a certain value to the local variable velocity according to the key pressed
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			velocity.x = -speed;
-			anims.SetCurrent("move");
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			velocity.x = speed;
-			anims.SetCurrent("move");
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			velocity.y = -speed;
-			anims.SetCurrent("move");
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			velocity.y = speed;
-			anims.SetCurrent("move");
-		}
-		else {
 			anims.SetCurrent("idle");
 		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			velocity.x = speed;
+			anims.SetCurrent("idle");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			velocity.y = -speed;
+			anims.SetCurrent("idle");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			velocity.y = speed;
+			anims.SetCurrent("idle");
+		}
+		
 
 		//Applies the velocity to the player
 		b2Body_SetLinearVelocity(pbody->body, velocity);
