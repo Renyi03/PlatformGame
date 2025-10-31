@@ -234,8 +234,17 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		Engine::GetInstance().audio->PlayFx(pickCoinFxId);
 		physB->listener->Destroy();
 		break;
+	case ColliderType::LIMITS:
+		LOG("Collision LIMITS");
+		break;
 	case ColliderType::VOID:
 		LOG("Collision VOID");
+		if (godMode == false) {
+			gameOver = true;
+		}
+		break;
+	case ColliderType::SPIKES:
+		LOG("Collision SPIKES");
 		if (godMode == false) {
 			gameOver = true;
 		}
@@ -257,6 +266,15 @@ void Player::OnCollisionEnd(PhysBody* physA, PhysBody* physB)
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("End Collision UNKNOWN");
+		break;
+	case ColliderType::VOID:
+		LOG("End Collision VOID");
+		break;
+	case ColliderType::LIMITS:
+		LOG("End Collision LIMITS");
+		break;
+	case ColliderType::SPIKES:
+		LOG("End Collision SPIKES");
 		break;
 	default:
 		break;

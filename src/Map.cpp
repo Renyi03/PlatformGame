@@ -318,5 +318,11 @@ void Map::CreateColliders()
                 c4->ctype = ColliderType::PLATFORM;
             }
         }
+        if (mapObjects->name == "Spikes") {
+            for (const auto& obj : mapObjects->obj) {
+                PhysBody* c5 = Engine::GetInstance().physics.get()->CreateRectangle(obj->x + obj->width / 2, obj->y + obj->height / 2, obj->width, obj->height, STATIC);
+                c5->ctype = ColliderType::SPIKES;
+            }
+        }
     }
 }
