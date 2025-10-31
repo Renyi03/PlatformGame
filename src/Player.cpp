@@ -28,7 +28,7 @@ bool Player::Awake() {
 bool Player::Start() {
 
 	// load
-	std::unordered_map<int, std::string> aliases = { {0,"idle"},{6,"move"},{12,"jump"} };
+	std::unordered_map<int, std::string> aliases = { {0,"idle"},{6,"move"},{12,"jump"}, {18, "death"} };
 	anims.LoadFromTSX("Assets/Textures/MikuSpriteSheet.tsx", aliases);
 	anims.SetCurrent("idle");
 
@@ -66,6 +66,8 @@ bool Player::Update(float dt)
 	}
 	Draw(dt);
 
+	
+
 	return true;
 }
 
@@ -84,7 +86,6 @@ void Player::Move() {
 			anims.SetCurrent("move");
 			facingDirection = SDL_FLIP_HORIZONTAL;
 		}
-		anims.SetCurrent("move");
 	}
 	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		lookingRight = true;
@@ -106,15 +107,18 @@ void Player::Jump() {
 		if (lookingRight) {
 			facingDirection = SDL_FLIP_NONE;
 		}
-		else {
+		else if(!lookingRight) {
 			facingDirection = SDL_FLIP_HORIZONTAL;
 		}
+
 		if (!isJumping) {
 			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);			
 			anims.SetCurrent("jump");
 			isJumping = true;
 			doubleJump = true;
+			
 		}
+
 		// Second jump (in air)
 		else if (isJumping && doubleJump) {
 			b2Vec2 currentVel = Engine::GetInstance().physics->GetLinearVelocity(pbody);
@@ -122,6 +126,14 @@ void Player::Jump() {
 			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
 			anims.SetCurrent("jump");
 			doubleJump = false;
+		}
+	}
+	if (isJumping) {
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			facingDirection = SDL_FLIP_HORIZONTAL;
+		}
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			facingDirection = SDL_FLIP_NONE;
 		}
 	}
 }
@@ -187,23 +199,21 @@ void Player::GodMode()
 		//Assigns a certain value to the local variable velocity according to the key pressed
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			velocity.x = -speed;
-			anims.SetCurrent("move");
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-			velocity.x = speed;
-			anims.SetCurrent("move");
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			velocity.y = -speed;
-			anims.SetCurrent("move");
-		}
-		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			velocity.y = speed;
-			anims.SetCurrent("move");
-		}
-		else {
 			anims.SetCurrent("idle");
 		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			velocity.x = speed;
+			anims.SetCurrent("idle");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			velocity.y = -speed;
+			anims.SetCurrent("idle");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			velocity.y = speed;
+			anims.SetCurrent("idle");
+		}
+		
 
 		//Applies the velocity to the player
 		b2Body_SetLinearVelocity(pbody->body, velocity);
