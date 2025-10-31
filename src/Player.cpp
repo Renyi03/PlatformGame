@@ -28,7 +28,7 @@ bool Player::Awake() {
 bool Player::Start() {
 
 	// load
-	std::unordered_map<int, std::string> aliases = { {0,"idle"},{6,"move"},{12,"jump"} };
+	std::unordered_map<int, std::string> aliases = { {0,"idle"},{6,"move"},{12,"jump"}, {18, "death"} };
 	anims.LoadFromTSX("Assets/Textures/MikuSpriteSheet.tsx", aliases);
 	anims.SetCurrent("idle");
 
@@ -84,7 +84,6 @@ void Player::Move() {
 			anims.SetCurrent("move");
 			facingDirection = SDL_FLIP_HORIZONTAL;
 		}
-		anims.SetCurrent("move");
 	}
 	else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		lookingRight = true;
@@ -106,9 +105,10 @@ void Player::Jump() {
 		if (lookingRight) {
 			facingDirection = SDL_FLIP_NONE;
 		}
-		else {
+		else if(!lookingRight) {
 			facingDirection = SDL_FLIP_HORIZONTAL;
 		}
+
 		if (!isJumping) {
 			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);			
 			anims.SetCurrent("jump");
