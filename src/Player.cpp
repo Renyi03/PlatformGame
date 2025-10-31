@@ -66,6 +66,8 @@ bool Player::Update(float dt)
 	}
 	Draw(dt);
 
+	
+
 	return true;
 }
 
@@ -114,7 +116,9 @@ void Player::Jump() {
 			anims.SetCurrent("jump");
 			isJumping = true;
 			doubleJump = true;
+			
 		}
+
 		// Second jump (in air)
 		else if (isJumping && doubleJump) {
 			b2Vec2 currentVel = Engine::GetInstance().physics->GetLinearVelocity(pbody);
@@ -122,6 +126,14 @@ void Player::Jump() {
 			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
 			anims.SetCurrent("jump");
 			doubleJump = false;
+		}
+	}
+	if (isJumping) {
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			facingDirection = SDL_FLIP_HORIZONTAL;
+		}
+		else if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			facingDirection = SDL_FLIP_NONE;
 		}
 	}
 }
